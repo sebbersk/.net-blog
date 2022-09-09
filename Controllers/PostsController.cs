@@ -10,6 +10,7 @@ namespace Blog.API.Controllers
     [Route("/api/[controller]")]
     public class PostsController : ControllerBase
     {
+
         private readonly IPostRepo _postRepo;
         private readonly ILogger _logger;
 
@@ -29,16 +30,15 @@ namespace Blog.API.Controllers
         
         public ActionResult<PostDTO> CreatePost(CreatePostDTO createdPost) 
         {
-            Guid PostId = Guid.NewGuid();
             DateTimeOffset CreatedAt = DateTimeOffset.UtcNow;
-            Post NewPost = new Post{Id = PostId, Title = createdPost.Title, Content=createdPost.Content, AuthorId= createdPost.AuthorId, CreatedAt = CreatedAt};
+            Post NewPost = new Post{Title = createdPost.Title, Content=createdPost.Content, AuthorId= createdPost.AuthorId, CreatedAt = CreatedAt};
             _postRepo.CreatePost(NewPost);
             return NewPost.asDTO();
         }
 
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<PostDTO> GetPost(Guid id)
+        public ActionResult<PostDTO> GetPost(string id)
         {
             var post = _postRepo.GetPost(id);
             
@@ -50,7 +50,7 @@ namespace Blog.API.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public ActionResult UpdatePost(Guid id, UpdatePostDTO postDTO) 
+        public ActionResult UpdatePost(string id, UpdatePostDTO postDTO) 
         {
             var post = _postRepo.GetPost(id);
 
@@ -68,7 +68,7 @@ namespace Blog.API.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public ActionResult DeletePost(Guid id)
+        public ActionResult DeletePost(string id)
         {
             var post = _postRepo.GetPost(id);
 
@@ -80,6 +80,14 @@ namespace Blog.API.Controllers
             _postRepo.DeletePost(id);           
             
             return Content("Post Deleted");
+        }
+
+        [HttpGet]
+        [Route("authors/{id}")]
+        public IEnumerable<PostDTO> GetPostsByAuthorId(string id)
+        {
+            var posts = _postRepo.GetPostsByAuthorId(id);
+            return posts.Select(post => post.asDTO());
         }
     }
 }

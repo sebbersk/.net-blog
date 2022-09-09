@@ -6,9 +6,11 @@ namespace Blog.API.Interfaces
     {
        IEnumerable<Post> GetPosts();
        void CreatePost(Post post);
-       Post GetPost(Guid id);
+       Post GetPost(string id);
        void UpdatePost(Post post);
+       void DeletePost(string id);
 
-       void DeletePost(Guid id);
+        IEnumerable<Post> GetPostsByAuthorId(string id);
+
     }
 }
