@@ -4,7 +4,11 @@ namespace Blog.API.Interfaces
 {
     public interface IPostRepo
     {
-        public IEnumerable<Post> GetPosts();
-        public void CreatePost(Post post);
+       IEnumerable<Post> GetPosts();
+       void CreatePost(Post post);
+       Post GetPost(Guid id);
+       void UpdatePost(Post post);
+
+       void DeletePost(Guid id);
     }
 }

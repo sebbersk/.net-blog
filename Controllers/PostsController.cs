@@ -35,5 +35,51 @@ namespace Blog.API.Controllers
             _postRepo.CreatePost(NewPost);
             return NewPost.asDTO();
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        public ActionResult<PostDTO> GetPost(Guid id)
+        {
+            var post = _postRepo.GetPost(id);
+            
+            if (post is null) {
+                return NotFound();
+            }
+            return post.asDTO();
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public ActionResult UpdatePost(Guid id, UpdatePostDTO postDTO) 
+        {
+            var post = _postRepo.GetPost(id);
+
+            if (post is null)
+            {
+                return NotFound();
+            }
+
+            post.Title = postDTO.Title;
+            post.Content = postDTO.Content;
+            _postRepo.UpdatePost(post);
+            
+            return Content("Post Updated");
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public ActionResult DeletePost(Guid id)
+        {
+            var post = _postRepo.GetPost(id);
+
+            if (post is null)
+            {
+                return NotFound();
+            }
+
+            _postRepo.DeletePost(id);           
+            
+            return Content("Post Deleted");
+        }
     }
 }

@@ -15,11 +15,27 @@ namespace Blog.API.Repositories
             posts.Add(post);
         }
 
+        public void DeletePost(Guid id)
+        {
+            var postIndex = posts.FindIndex(post => post.Id == id);
+            posts.RemoveAt(postIndex);
+        }
+
+        public Post GetPost(Guid id)
+        {
+            var post = posts.Where(post => post.Id == id).SingleOrDefault();
+            return post;
+        }
+
         public IEnumerable<Post> GetPosts()
         {
              return posts;
         }
 
-        
+        public void UpdatePost(Post updatedPost)
+        {
+            var postIndex = posts.FindIndex( post => post.Id == updatedPost.Id);
+            posts[postIndex] = updatedPost;
+        }
     }
 }
