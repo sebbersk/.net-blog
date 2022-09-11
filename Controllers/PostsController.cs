@@ -23,7 +23,7 @@ namespace Blog.API.Controllers
         [HttpGet]
         public IEnumerable<PostDTO> GetPosts()
         {
-            return _postRepo.GetPosts().Select(post => post.asDTO());
+            return _postRepo.GetPosts().Select(post => post.asDTO()).OrderByDescending(post => post.CreatedAt);
         }
 
         [HttpPost]
